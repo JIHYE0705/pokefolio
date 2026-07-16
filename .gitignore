@@ -21,6 +21,7 @@ Thumbs.db
 # Local agent skills and references
 .agents/
 apple-design-skill/
+.worktrees/
 
 # C extensions
 *.so
