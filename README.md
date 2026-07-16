@@ -1,57 +1,79 @@
 # Pokefolio
 
-Pokefolio는 Pokémon TCG 컬렉션을 기록하고 관리하는 모바일 우선 포트폴리오 서비스입니다.
+Pokefolio는 포켓몬 카드 컬렉터가 카드를 모으고, 기록하고, 꾸미고, 교환하는 즐거움에 집중하는 모바일 우선 웹 서비스입니다.
 
-현재 저장소는 프로젝트 구조와 문서만 준비한 초기 단계입니다. 애플리케이션 코드, 패키지 설정, 데이터베이스 파일은 아직 포함하지 않습니다.
+> 현재 저장소는 구조와 개발 문서를 정리하는 단계입니다. 아래 기능과 기술 구성은 계획이며, 애플리케이션 코드는 아직 구현되지 않았습니다.
 
-## 목표
+## 핵심 경험
 
-- 카드 컬렉션 관리
-- 팩 개봉 기록
-- 바인더 구성 지원
-- 교환 후보 제안
-- 컬렉션 인사이트 제공
+- 내가 보유한 카드와 수량 확인
+- 컬렉션, 위시리스트, 중복 카드 관리
+- 카드 이미지 중심의 가상 바인더 꾸미기
+- 팩 개봉일기와 획득 카드 기록
+- 향후 취향 분석, 규칙 기반 추천, 카드 인식, 교환 지원
+
+Pokefolio는 시세 조회나 투자 판단을 핵심 가치로 삼지 않습니다.
 
 ## 기술 방향
 
-- 프런트엔드: Next.js, Mobile First
-- 백엔드: Python, FastAPI
-- 데이터베이스: SQLite
-- 저장소 구성: Monorepo
+| 영역 | 계획 |
+| --- | --- |
+| Frontend | Next.js App Router, TypeScript strict, Tailwind CSS, shadcn/ui, npm |
+| Backend | Python, FastAPI, SQLAlchemy 2.x typed declarative mapping, Alembic, Pydantic v2 |
+| Local database | SQLite, PostgreSQL 이전 가능성을 고려한 설계 |
+| Testing | Frontend 최소 unit/component/e2e 도구, Backend pytest |
+| UI | 390px 모바일 우선 웹, 향후 PWA 지원 가능 구조 |
+| Local development | 초기에는 Docker를 사용하지 않음 |
 
-세부 기술 선택과 구현 원칙은 [`docs/PROJECT.md`](docs/PROJECT.md), 단계별 계획은 [`docs/ROADMAP.md`](docs/ROADMAP.md)에서 관리합니다.
+SQLModel은 사용하지 않으며 SQLAlchemy DB 모델과 Pydantic API 스키마를 분리합니다.
 
-## 프로젝트 구조
+## 저장소 구조
 
 ```text
 pokefolio/
-├── frontend/
-│   ├── app/          # Next.js App Router 화면과 라우트
-│   ├── components/   # 공용 UI 컴포넌트
-│   ├── features/     # 도메인별 프런트엔드 기능
-│   ├── lib/          # API 클라이언트와 공용 유틸리티
-│   ├── public/       # 정적 파일
-│   └── tests/        # 프런트엔드 테스트
-├── backend/
+├── frontend/             # 향후 Next.js 애플리케이션과 프런트엔드 테스트
 │   ├── app/
-│   │   ├── api/          # FastAPI 엔드포인트
-│   │   ├── core/         # 설정과 공통 기반 코드
-│   │   ├── db/           # SQLite 연결과 세션 관리
-│   │   ├── models/       # 데이터베이스 모델
-│   │   ├── repositories/ # 데이터 접근 계층
-│   │   ├── schemas/      # 요청과 응답 스키마
-│   │   └── services/     # 비즈니스 로직
-│   └── tests/            # 백엔드 테스트
-├── docs/
-│   ├── PROJECT.md    # 프로젝트 범위와 아키텍처 방향
-│   └── ROADMAP.md    # 단계별 개발 계획
-├── AGENTS.md         # 저장소 작업 지침
+│   ├── components/
+│   ├── features/
+│   ├── lib/
+│   ├── public/
+│   └── tests/
+├── backend/              # 향후 FastAPI 애플리케이션과 백엔드 테스트
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── schemas/
+│   │   └── services/
+│   └── tests/
+├── docs/                 # 제품, 설계, 계약, 개발 문서
+├── scripts/              # 향후 반복 작업용 스크립트
+├── AGENTS.md             # 저장소 작업 규칙
 ├── README.md
 └── .gitignore
 ```
 
-## 현재 상태
+## 현재 개발 단계
 
-- 모노레포 폴더 구조 설계 및 생성
-- 프로젝트 문서 작성
-- 구현 및 의존성 설치 전
+- Phase 0: 제품 범위, 설계 원칙, 데이터/API 초안, 작업 규칙 문서화
+- 애플리케이션 코드, 패키지 설정, 마이그레이션, 데이터베이스는 아직 없음
+- 다음 단계는 문서 리뷰 후 Frontend/Backend scaffold 구성
+
+## 문서 안내
+
+| 문서 | 내용 |
+| --- | --- |
+| [PROJECT](docs/PROJECT.md) | 제품 비전, 사용자, MVP 범위, 성공 기준 |
+| [ROADMAP](docs/ROADMAP.md) | Phase 0~8 목표와 완료 조건 |
+| [DESIGN](docs/DESIGN.md) | 모바일 UI와 Apple HIG 적용 원칙 |
+| [SCREENS](docs/SCREENS.md) | 화면별 목적, 상태, 흐름, 와이어프레임 |
+| [ERD](docs/ERD.md) | 초기 엔티티와 관계 후보 |
+| [API](docs/API.md) | HTTP API 계약 초안 |
+| [CODING_RULES](docs/CODING_RULES.md) | Frontend/Backend 코딩 규칙 |
+| [TESTING](docs/TESTING.md) | 테스트 범위와 검증 기준 |
+| [DECISIONS](docs/DECISIONS.md) | 주요 기술·제품 결정 기록 |
+| [PROMPTS](docs/PROMPTS.md) | 후속 Codex 작업 프롬프트 템플릿 |
+
+저장소에서 작업하기 전 [AGENTS.md](AGENTS.md)와 작업 영역에 해당하는 문서를 먼저 확인합니다.
