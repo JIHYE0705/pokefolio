@@ -5,10 +5,9 @@ export default function BindersPage() {
     <div className="page-stack">
       <header className="page-heading">
         <h1>바인더</h1>
-        <p>좋아하는 카드를 한 페이지에 차분히 모아보세요.</p>
       </header>
 
-      <section aria-labelledby="favorite-binder" className="binder-card surface-card">
+      <section aria-labelledby="favorite-binder" className="binder-card">
         <div className="binder-card__header">
           <h2 id="favorite-binder">최애 카드</h2>
           <p>5 / 9 slots</p>

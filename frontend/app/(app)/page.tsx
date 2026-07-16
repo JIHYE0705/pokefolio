@@ -8,37 +8,32 @@ export default function HomePage() {
     <div className="page-stack">
       <header className="page-heading">
         <h1>나의 수집 앨범</h1>
-        <p>모아둔 카드와 최근 기록을 가볍게 둘러보세요.</p>
       </header>
 
       <section aria-labelledby="collection-summary" className="section-block">
-        <h2 className="section-heading" id="collection-summary">
-          컬렉션 요약
-        </h2>
-        <div className="summary-grid">
-          <article className="summary-card surface-card">
+        <h2 className="sr-only" id="collection-summary">컬렉션 요약</h2>
+        <div className="summary-row">
+          <div className="summary-item">
             <p className="summary-card__label">보유 카드</p>
             <p className="summary-card__value">128</p>
             <p className="summary-card__note">서로 다른 카드 92장</p>
-          </article>
-          <article className="summary-card surface-card">
+          </div>
+          <div className="summary-item">
             <p className="summary-card__label">중복 카드</p>
             <p className="summary-card__value">12</p>
             <p className="summary-card__note">교환 준비 중</p>
-          </article>
+          </div>
         </div>
       </section>
 
       <section aria-labelledby="recent-activity" className="section-block">
         <h2 className="section-heading" id="recent-activity">
-          최근 활동
+          최근 컬렉션
         </h2>
         <ul className="activity-list">
           {recentActivity.map((item) => (
-            <li className="activity-item surface-card" key={item.name}>
-              <span aria-hidden="true" className="activity-art">
-                {item.mark}
-              </span>
+            <li className="activity-item" key={item.name}>
+              <span aria-hidden="true" className="activity-art" />
               <div className="item-copy">
                 <strong>{item.name}</strong>
                 <span>{item.note}</span>

@@ -10,7 +10,6 @@ export default function CollectionPage() {
     <div className="page-stack">
       <header className="page-heading">
         <h1>컬렉션</h1>
-        <p>카드 이미지를 중심으로 보유 수량과 기록을 확인합니다.</p>
       </header>
 
       <section aria-labelledby="owned-cards" className="section-block">
@@ -25,11 +24,7 @@ export default function CollectionPage() {
                 className="collectible-card__art"
                 role="img"
                 style={{ "--card-color": card.color } as React.CSSProperties}
-              >
-                <span aria-hidden="true" className="collectible-card__mark">
-                  {card.mark}
-                </span>
-              </div>
+              />
               <h2>{card.name}</h2>
               <p>{card.note}</p>
             </article>

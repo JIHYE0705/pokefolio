@@ -9,7 +9,6 @@ export default function OpeningLogsPage() {
     <div className="page-stack">
       <header className="page-heading">
         <h1>개봉일기</h1>
-        <p>팩을 열던 순간과 새로 만난 카드를 함께 기록합니다.</p>
       </header>
 
       <section aria-labelledby="recent-logs" className="section-block">
@@ -18,10 +17,8 @@ export default function OpeningLogsPage() {
         </h2>
         <ol className="opening-list">
           {logs.map((log) => (
-            <li className="opening-item surface-card" key={`${log.date}-${log.title}`}>
-              <span aria-hidden="true" className="opening-art">
-                {log.mark}
-              </span>
+            <li className="opening-item" key={`${log.date}-${log.title}`}>
+              <span aria-hidden="true" className="opening-art" />
               <div className="item-copy">
                 <time dateTime={log.date}>{log.date}</time>
                 <strong>{log.title}</strong>
