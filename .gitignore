@@ -18,6 +18,10 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# Local agent skills and references
+.agents/
+apple-design-skill/
+
 # C extensions
 *.so
 
