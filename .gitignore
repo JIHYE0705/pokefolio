@@ -3,6 +3,21 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Environment variables and local overrides
+.env.*
+!.env.example
+
+# Frontend dependencies and build output
+node_modules/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
 # C extensions
 *.so
 
