@@ -57,9 +57,10 @@ pokefolio/
 
 ## 현재 개발 단계
 
-- Phase 0: 제품 범위, 설계 원칙, 데이터/API 초안, 작업 규칙 문서화
-- 애플리케이션 코드, 패키지 설정, 마이그레이션, 데이터베이스는 아직 없음
-- 다음 단계는 문서 리뷰 후 Frontend/Backend scaffold 구성
+- Phase 1 진행 중: Frontend 최소 scaffold와 모바일 공통 mock 레이아웃 구성
+- Home, Collection, Binder, Opening Log route는 mock 데이터만 사용하며 API에 연결되지 않음
+- Backend 애플리케이션, migration, 데이터베이스는 아직 없음
+- 다음 단계는 공통 레이아웃 리뷰 후 화면별 mock UI 확장
 
 ## 문서 안내
 
