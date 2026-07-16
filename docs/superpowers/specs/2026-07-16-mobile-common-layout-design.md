@@ -119,7 +119,7 @@ Mock 값은 각 page 파일의 읽기 전용 배열로 둔다. 공통 domain abs
 - Error: 쉬운 오류 설명과 안전한 route link 기반 복구 행동
 - Success: 각 mock page의 정상 콘텐츠
 
-이번 범위에는 실제 비동기 data source가 없으므로 route별 loading/error 전환 로직을 가장하지 않는다. 공통 상태 컴포넌트를 Home 하단의 상태 preview section과 component test로 검증한다.
+이번 범위에는 실제 비동기 data source가 없으므로 route별 loading/error 전환 로직을 가장하지 않는다. 공통 상태 컴포넌트는 component test로 검증하고 정상 mock page에 거짓 loading이나 error를 표시하지 않는다.
 
 ## TDD와 검증
 

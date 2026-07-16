@@ -171,9 +171,9 @@
 
   Home summary/activity, Collection non-branded card placeholder grid, Binder 3×3 slot preview, Opening Log list를 구현한다.
 
-- [ ] **Step 3: 상태 preview 추가**
+- [ ] **Step 3: 상태 styling 추가**
 
-  Home 하단에 Loading, Empty, Error components를 실제 layout 안에서 확인할 수 있는 preview section을 둔다.
+  Loading, Empty, Error components가 실제 화면 상태에서 재사용할 공통 styling을 추가한다. 정상 mock page에는 거짓 loading이나 error를 표시하지 않는다.
 
 - [ ] **Step 4: test와 정적 검증**
 

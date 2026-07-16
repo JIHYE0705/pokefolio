@@ -1,6 +1,6 @@
 # Pokefolio 테스트 전략
 
-현재는 애플리케이션과 package script가 없으므로 아래 명령은 아직 실행할 수 없다. Phase 1 scaffold에서 실제 도구와 script 이름을 확정한 뒤 이 문서를 갱신한다.
+Frontend는 Vitest와 Testing Library 기반 component test 및 lint, typecheck, build script를 제공한다. Backend와 frontend e2e 도구는 아직 구성하지 않았다.
 
 ## 원칙
 
@@ -101,33 +101,34 @@ FastAPI test client와 격리된 test database를 사용한다.
 
 ## 검증 명령
 
-아래 이름은 Phase 1에서 `package.json`과 backend 설정에 실제 script로 정의할 **목표 명령**이다. 현재 실행 가능하다는 뜻이 아니다.
+Frontend 명령은 현재 실행 가능하다. Backend와 `test:e2e` 명령은 아직 목표 명령이다.
 
 ```bash
-# Frontend target commands
+# Frontend current commands
 cd frontend
 npm run lint
 npm run typecheck
-npm test
-npm run test:e2e
+npm test -- --run
 npm run build
 
-# Backend target commands
+# Future target commands
+cd frontend
+npm run test:e2e
+
 cd backend
 pytest
 alembic upgrade head
 alembic check
 ```
 
-Phase 1에서 선택할 최소 frontend 도구 기준:
+현재 frontend unit/component 도구는 Vitest, jsdom, Testing Library다. E2E 도구는 다음 기준으로 후속 선택한다.
 
-- unit/component: Next.js와 호환되고 DOM 접근성 query를 제공하는 하나의 test runner
 - e2e: 390px viewport와 keyboard/browser flow를 재현하는 하나의 browser test tool
 - dependency를 선택할 때 npm script, 유지보수 상태, Next.js 호환성, 실행 비용을 문서화한다.
 
 ## 문서 단계 검증
 
-애플리케이션 scaffold 전에는 다음을 실행한다.
+문서-only 변경에는 다음을 실행한다.
 
 ```bash
 git diff --check
