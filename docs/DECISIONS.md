@@ -90,12 +90,33 @@
 
 - **Status:** Accepted
 - **Context:** 총 카드, 중복, Wishlist와 시세를 같은 크기의 통계로 보여주는 Home은 사용자가 다시 열 이유를 관리 지표로 축소하고 모바일 SaaS dashboard처럼 보이게 한다.
-- **Decision:** Home은 이어서 꾸밀 Binder, 최근 수집 기억, 최근 추가 카드, 과거의 오늘, Keeper가 발견한 변화와 오늘 할 수 있는 한 가지 행동을 우선한다.
-- **Consequences:** 통계와 복잡한 graph는 첫 화면 중심에서 제외하고 primary CTA를 하나로 제한한다. 콘텐츠가 부족할 때는 빈 통계 tile 대신 첫 Collection Journal 또는 Binder 행동을 안내한다.
+- **Decision:** Home은 오늘 기록한 순간, 오늘의 카드, `1년 전 오늘`, 이어서 꾸밀 Binder 순으로 사용자가 지금 다시 보고 이어갈 콘텐츠를 우선한다. Keeper는 초기 Home의 고정 영역으로 두지 않는다.
+- **Consequences:** 통계와 복잡한 graph는 첫 화면 중심에서 제외하고 primary CTA를 하나로 제한한다. 콘텐츠가 부족할 때는 빈 통계 tile 대신 첫 Journal 또는 Binder 행동을 안내한다.
 
 ## ADR-014: Collection Journal quick entry requires only a record type
 
 - **Status:** Accepted
 - **Context:** 기록 항목을 많이 요구하면 Collection Journal이 기억을 남기는 경험보다 data entry 작업처럼 느껴진다. 반대로 어떤 순간인지 구분할 최소 맥락은 필요하다.
-- **Decision:** `오늘의 순간` 빠른 기록은 기록 유형만 필수로 받고 진입 경로에서 기본값을 설정한다. 날짜·시간은 현재 시각으로 자동 저장한다. 획득 카드, 획득 카드 중에서 고르는 오늘의 카드, 한 줄 기록과 사진은 모두 선택이며 기본값은 없다. Primary action은 `기억 남기기`로 통일한다.
-- **Consequences:** 사용자는 카드나 문장 없이도 순간을 저장할 수 있다. 오늘의 카드는 획득 카드가 있을 때만 선택할 수 있어야 하며, 기록 유형 선택지와 진입 경로별 기본값 및 사진 저장 정책은 구현 전에 별도로 확정한다.
+- **Decision:** `오늘의 순간` 빠른 기록은 `기록 유형 선택 → 사진 또는 카드 선택(건너뛰기 가능) → 기억 남기기`의 3결정 흐름을 사용한다. 기록 유형만 필수이고 날짜·시간은 현재 시각으로 자동 저장한다. 획득 카드, 획득 카드 중에서 고르는 오늘의 카드, 한 줄 기록과 사진은 모두 선택이며 기본값은 없다.
+- **Consequences:** 사용자는 카드나 문장 없이도 순간을 저장할 수 있다. 오늘의 카드는 획득 카드가 있을 때만 선택할 수 있어야 하며, 진입 경로별 기본값과 사진 저장 정책은 구현 전에 별도로 확정한다.
+
+## ADR-015: Moment is the central Journal object
+
+- **Status:** Accepted
+- **Context:** 카드가 기록의 중심이면 카드샵 방문, 여행, 팝업과 사진만 남은 기억을 자연스럽게 저장할 수 없다. 이는 `Collect memories, not just cards.`라는 제품 방향과 충돌한다.
+- **Decision:** Journal의 중심 객체를 `Moment(오늘의 순간)`로 정의한다. 카드는 Moment에 0개 이상, 사진은 MVP에서 0개 또는 1개 연결되는 선택 요소다. 제품 기능은 `Collection Journal`, navigation label은 `Journal`, 개별 기록 단위는 `Moment`로 구분한다.
+- **Consequences:** 카드 없는 Moment도 정상 기록이다. 기존 `OpeningLog` 데이터 초안의 이름과 관계는 구현 전에 다시 검토해야 하며 이 ADR만으로 모델이나 API 계약을 확정하지 않는다.
+
+## ADR-016: Rating is excluded from Journal MVP
+
+- **Status:** Accepted
+- **Context:** 별점은 순간을 기억하기보다 경험을 평가하게 만들어 Collection Journal을 일반 diary나 review 도구처럼 보이게 한다.
+- **Decision:** Journal MVP의 빠른 기록, Timeline과 저장 보상 화면에 별점 필드나 별점 표시를 두지 않는다. 기억의 결은 선택적인 한 줄 기록으로 남긴다.
+- **Consequences:** 기존 초안이나 예시의 rating은 MVP 요구사항으로 사용하지 않는다. 실제 사용자 검증에서 별도 필요가 확인되기 전에는 데이터 모델과 API에도 추가하지 않는다.
+
+## ADR-017: Removing a Moment is recoverable
+
+- **Status:** Accepted
+- **Context:** 추억을 다루는 제품에서 즉시 영구 삭제는 실수의 비용과 불안을 크게 만든다.
+- **Decision:** 기본 제거 행동은 `휴지통으로 이동`이며 즉시 `되돌리기`를 제공한다. 휴지통에서는 복원할 수 있고 영구 삭제는 별도 확인 뒤에만 실행한다.
+- **Consequences:** 향후 데이터 설계에서 복구 가능한 상태를 지원해야 한다. 휴지통 보관 기간과 자동 영구 삭제 여부는 사용자 검증과 개인정보 정책을 검토한 뒤 결정한다.
