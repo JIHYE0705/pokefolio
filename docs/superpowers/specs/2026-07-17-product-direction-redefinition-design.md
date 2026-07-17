@@ -128,7 +128,7 @@ Apple 고유 UI를 복제하지 않고 clarity, deference, depth, familiarity, a
 
 ## 검증
 
-- 지정한 일곱 문서와 새 제품 비전 문서만 제품 방향 변경 대상으로 삼는다.
+- 지정한 여섯 기존 문서와 새 제품 비전 문서만 제품 방향 변경 대상으로 삼는다.
 - 내부 Markdown 링크 대상이 존재하는지 확인한다.
 - `Collection Journal`, `Collection Journey`, `Memories`, `Keeper` 용어가 문서별 책임에 맞게 쓰였는지 검색한다.
 - 새 기능을 현재 구현된 기능처럼 표현하지 않았는지 검토한다.
