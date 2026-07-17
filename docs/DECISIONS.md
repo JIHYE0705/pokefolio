@@ -57,3 +57,38 @@
 - **Context:** 초기 가설은 컬렉션 관리 경험이며 인증과 공유는 별도 위험과 범위를 만든다.
 - **Decision:** MVP는 로그인 없는 단일 사용자로 운영한다. API와 service에서 암묵적 전역 상태가 퍼지지 않도록 향후 사용자 context 추가 지점을 문서화한다.
 - **Consequences:** 핵심 흐름을 빠르게 검증할 수 있다. 다중 사용자 전환 전 소유권 컬럼, 데이터 migration, 인증·권한·개인정보 설계를 완료해야 한다.
+
+## ADR-009: Pokefolio is a collection journal
+
+- **Status:** Accepted
+- **Context:** 기존 제품 정의는 수집, 기록, Binder와 교환을 함께 나열해 카드 관리 기능과 사용자가 다시 찾을 감정적 가치의 우선순위가 충분히 선명하지 않았다.
+- **Decision:** Pokefolio를 컬렉션 관리 앱이 아니라 카드와 그 카드를 모았던 순간을 함께 기록하고 다시 꺼내보는 모바일 컬렉션 저널로 정의한다. 설렘, 뿌듯함과 추억을 제품의 핵심 감정으로 둔다.
+- **Consequences:** Home, Collection, Collection Journal, Binder와 후속 기능은 보유량 관리보다 카드 이미지, 기록과 수집 여정을 먼저 보여줘야 한다. CRUD와 metadata는 이 경험을 지원하는 기반으로 평가한다.
+
+## ADR-010: Price and investment are not core experiences
+
+- **Status:** Accepted
+- **Context:** 시세와 수익률은 일부 사용자에게 유용할 수 있지만 전면에 배치하면 기억과 취향보다 자산 가치가 제품의 목적처럼 보인다.
+- **Decision:** 시세, 등급과 투자 정보는 MVP와 핵심 navigation, Home 우선순위와 제품 성공 기준에서 제외한다. 향후 제공하더라도 사용자가 요청할 때 확인하는 보조 정보로만 검토한다.
+- **Consequences:** 총 가치, 수익률, 구매 권유와 투자 dashboard를 핵심 화면에 만들지 않는다. 후속 제안은 수집의 감정적 가치와 입력 부담을 해치지 않는지 먼저 검증해야 한다.
+
+## ADR-011: Opening Log expands to Collection Journal
+
+- **Status:** Accepted
+- **Context:** `Opening Log`는 팩 개봉만 기록하는 기능으로 이해되기 쉬워 낱장 구매, 카드샵·팝업스토어 방문, 선물, 교환, 여행과 개인적인 기억을 포괄하지 못한다.
+- **Decision:** 사용자에게 보이는 공식 기록 개념과 용어를 `Collection Journal`로 통일한다. 빠른 기록과 선택적인 자세히 기록하기를 제공하고 모든 항목을 강제하지 않는다.
+- **Consequences:** 기존 `OpeningLog`, `OpeningLogCard`, `/opening-logs`와 Frontend mock route는 구현 전 초안으로 남아 있다. 모델, API와 route 이름의 변경 및 호환 정책은 별도 설계에서 결정하며 이번 ADR만으로 구현 계약을 확정하지 않는다.
+
+## ADR-012: Keeper is a quiet collection companion
+
+- **Status:** Accepted
+- **Context:** 일반적인 AI 분석이나 추천 상자는 자동화가 제품의 주인공처럼 보이게 하고 사용자의 취향과 감정을 수치로 단정할 위험이 있다.
+- **Decision:** Keeper를 컬렉션의 작은 변화, 과거 기록과 카드 사이의 연결을 관찰하고 짧고 따뜻하게 제안하는 동반자로 정의한다. Keeper는 명령, 구매·투자 권유, 긴 분석과 감정 단정을 하지 않으며 핵심 흐름의 필수 의존성이 되지 않는다.
+- **Consequences:** Keeper는 관찰 근거가 있을 때만 관련 콘텐츠 안에 나타나고 숨기거나 실패해도 Collection Journal이 동작해야 한다. 이 결정은 ADR-007의 AI 보조 원칙을 제품 언어와 노출 방식으로 구체화한다.
+
+## ADR-013: Home prioritizes memories and next actions
+
+- **Status:** Accepted
+- **Context:** 총 카드, 중복, Wishlist와 시세를 같은 크기의 통계로 보여주는 Home은 사용자가 다시 열 이유를 관리 지표로 축소하고 모바일 SaaS dashboard처럼 보이게 한다.
+- **Decision:** Home은 이어서 꾸밀 Binder, 최근 수집 기억, 최근 추가 카드, 과거의 오늘, Keeper가 발견한 변화와 오늘 할 수 있는 한 가지 행동을 우선한다.
+- **Consequences:** 통계와 복잡한 graph는 첫 화면 중심에서 제외하고 primary CTA를 하나로 제한한다. 콘텐츠가 부족할 때는 빈 통계 tile 대신 첫 Collection Journal 또는 Binder 행동을 안내한다.

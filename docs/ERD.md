@@ -2,6 +2,8 @@
 
 이 문서는 구현 전 데이터 모델 후보를 설명한다. 실제 SQLAlchemy 모델이나 Alembic migration이 아니며, 카드 데이터 제공자와 식별자 정책을 정한 뒤 필드와 타입을 확정한다.
 
+[제품 비전](PRODUCT_VISION.md)이 Collection Journal 중심으로 변경되었으므로 기존 `OpeningLog` 초안은 확정 모델이 아니다. 아래 기존 엔티티는 영향 검토를 위한 기준으로 보존하고, 확장 또는 대체 후보는 문서 끝의 Open Questions에서 결정한다.
+
 ## 모델링 원칙
 
 - SQLAlchemy 2.x typed declarative mapping을 사용한다.
@@ -141,9 +143,9 @@ erDiagram
 - Index 후보: (`user_card_id`)
 - 삭제 정책: Page 삭제 시 cascade, UserCard 삭제는 `RESTRICT`, 슬롯 비우기는 `user_card_id = NULL`이다.
 
-### OpeningLog
+### OpeningLog (기존 초안)
 
-한 번의 개봉 경험과 메모를 나타낸다.
+기존 기획에서 한 번의 팩 개봉 경험과 메모를 나타낸 후보였다. 새 제품 방향에서는 팩·박스 개봉뿐 아니라 구매, 방문, 선물, 교환, 여행과 개인적인 기억을 포함하는 `Collection Journal` 개념으로 확장해야 하며 이름과 필드를 아직 확정하지 않는다.
 
 | 필드 후보 | 타입 후보 | 설명 |
 | --- | --- | --- |
@@ -159,9 +161,9 @@ erDiagram
 - Index 후보: (`opened_on`), (`created_at`)
 - 삭제 정책: OpeningLogCard를 cascade 삭제하며 Card와 UserCard는 삭제하지 않는다.
 
-### OpeningLogCard
+### OpeningLogCard (기존 초안)
 
-개봉 기록에서 획득한 카드와 수량을 나타낸다.
+기존 개봉 기록에서 획득한 카드와 수량을 나타낸 후보였다. 향후 `JournalEntryCard` 같은 관계로 대체할지, `UserCard`와 어떤 단위로 연결할지는 미결정이다.
 
 | 필드 후보 | 타입 후보 | 설명 |
 | --- | --- | --- |
@@ -184,12 +186,56 @@ erDiagram
 - 개봉일기와 OpeningLogCard 생성은 한 transaction으로 처리한다.
 - 개봉일기 카드가 보유 수량도 늘리는 정책을 채택하면 두 변경을 같은 service transaction으로 처리한다.
 
+위 두 개봉일기 transaction 항목은 기존 초안의 검토 기준이다. Collection Journal과 Collection의 연동 정책을 정할 때 보존, 수정 또는 대체한다.
+
+## 제품 방향 변경에 따른 Open Questions
+
+새 제품 비전을 지원하기 위해 다음 요구를 검토하되 이번 문서 작업에서 엔티티, 필드와 타입을 확정하지 않는다.
+
+### Collection Journal 경계
+
+- 최상위 엔티티 이름을 `JournalEntry`로 둘지 `CollectionJournal`로 둘지
+- 획득 카드 관계를 `JournalEntryCard`로 두고 Card, UserCard 또는 실물 카드 중 무엇을 참조할지
+- 팩·박스 개봉, 낱장 구매, 카드샵·팝업스토어 방문, 선물, 교환, 여행과 개인 기억을 하나의 기록 유형으로 표현하는 방법
+- 빠른 기록의 최소 필드를 날짜와 한 줄 기록으로 둘지 카드까지 요구할지
+- 장소, 구매처·행사, 제품명·확장팩, 팩·박스 수량, 구매 금액, 당시 기분, 만족도, 함께한 사람과 긴 이야기의 저장 범위
+- 기분과 만족도를 enum, 자유 문장 또는 둘의 조합으로 둘지
+- 기록 저장이 UserCard를 자동 생성·증가할지, 사용자 확인 뒤 반영할지
+- 기록 수정·삭제가 Collection 수량에 미치는 영향과 transaction·복구 경계
+
+### 사진과 Attachment
+
+- 사진을 Collection Journal 전용 필드로 둘지 여러 엔티티가 공유하는 `Attachment`로 둘지
+- 원본, thumbnail, MIME type, 크기, 대체 텍스트와 정렬 순서 중 필요한 metadata
+- 로컬 파일, object storage 또는 외부 URL 중 MVP 저장 방식
+- 위치·사람이 포함될 수 있는 사진의 업로드, 보관, 삭제와 개인정보 정책
+
+### Binder Story
+
+- Binder의 기존 `description`, `cover_card_id` 후보를 유지하면서 `theme`을 별도 필드로 둘지
+- theme을 자유 문장, 제한된 category 또는 둘의 조합으로 표현할지
+- 대표 카드를 Card와 UserCard 중 무엇으로 참조할지
+- 장소나 특별한 기억을 Binder와 연결할 별도 관계가 필요한지
+
+### Memories와 Collection Journey
+
+- Memory를 별도 저장할지 Collection Journal, UserCard와 Binder에서 계산할지
+- “과거의 오늘”, 첫 등록 카드와 완성한 Binder의 기준 날짜를 무엇으로 삼을지
+- 계산 결과를 cache할 시점과 원본 기록 변경 시 무효화 정책
+- 기록이 부족하거나 날짜가 불명확할 때 Memory 생성을 건너뛰는 규칙
+
+### UserCard 단위
+
+- UserCard를 카드 종류·상태·finish·언어별 수량 묶음으로 유지할지 실제 실물 카드 한 장 단위로 관리할지
+- 같은 카드의 서로 다른 획득 기억, 사진, 상태와 Binder 배치를 정확히 연결하려면 실물 단위 식별자가 필요한지
+- 실물 단위가 MVP 기록 가치보다 입력·migration 복잡성을 더 크게 만드는지
+
 ## 미결정 사항
 
 - integer PK와 UUID/ULID 중 내부 식별자 전략
 - Card provider, 라이선스, 동기화·비활성화 정책
 - UserCard를 상태별 row로 묶을지 실제 카드 한 장 단위로 저장할지
-- 개봉일기 저장 시 UserCard 수량을 자동 증가할지
+- Collection Journal 저장 시 UserCard 수량을 자동 증가할지
 - BinderSlot에 같은 UserCard 수량보다 많은 중복 배치를 허용할지
 - 카드 condition, finish, language의 enum 값과 변경 정책
 - 검색을 DB `LIKE`로 시작할지 외부 카드 검색 API를 사용할지
