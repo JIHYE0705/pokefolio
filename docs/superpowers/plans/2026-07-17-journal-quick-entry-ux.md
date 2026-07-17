@@ -332,4 +332,3 @@ git commit -m "docs: finalize moment-first product contracts"
 - 기존 ERD와 향후 API에 미칠 영향
 - 실제 실행한 검증과 결과
 - 다음 권장 작업 1개: 문서 리뷰 승인 후 Journal UI 구현 계획 수립
-
