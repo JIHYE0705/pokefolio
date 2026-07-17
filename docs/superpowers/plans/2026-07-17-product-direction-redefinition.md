@@ -37,7 +37,7 @@
 
 - [ ] **Step 2: PROJECT를 MVP 실행 정의로 재작성**
 
-  문서 첫 부분에서 `PRODUCT_VISION.md`를 링크한다. 카드 또는 수집 경험 기록에서 Collection, Collection Journal, Binder, Memories, Wishlist, duplicates, Collection Journey, Keeper로 이어지는 사용자 여정을 명시한다. MVP 목표, 최소 기능, 검증 가설, 성공 기준, 제외 범위와 기존 기술 경계를 구분한다.
+  문서 첫 부분에서 `PRODUCT_VISION.md`를 링크한다. 카드 또는 수집 경험 기록에서 Collection, Collection Journal, Binder, Memories, Wishlist, duplicates, Collection Journey, Keeper로 이어지는 사용자 여정을 명시한다. 빠른 기록은 기록 유형만 필수로 하고 날짜·시간은 현재 시각으로 자동 저장하며 나머지는 선택으로 둔다. MVP 목표, 최소 기능, 검증 가설, 성공 기준, 제외 범위와 기존 기술 경계를 구분한다.
 
 - [ ] **Step 3: 제품 문서 자체 검증**
 
@@ -72,11 +72,11 @@
 
 - [ ] **Step 1: 네 핵심 화면 재정의**
 
-  Home, Collection, Collection Journal, Binder 각각에 감정, 목적, 첫 콘텐츠, 핵심 CTA, 보조 CTA, 금지 정보, loading·empty·error·success와 390px ASCII 와이어프레임을 작성한다. Home 순서는 이어서 꾸밀 바인더, 최근 수집 기억, 최근 카드, 과거의 오늘, Keeper의 관찰, 오늘의 간단한 행동으로 둔다.
+  Home, Collection, Collection Journal, Binder 각각에 감정, 목적, 첫 콘텐츠, 핵심 CTA, 보조 CTA, 금지 정보, loading·empty·error·success와 390px ASCII 와이어프레임을 작성한다. Home 순서는 이어서 꾸밀 바인더, 최근 수집 기억, 최근 카드, 과거의 오늘, Keeper의 관찰, 오늘의 간단한 행동으로 둔다. Collection Journal 작성 화면은 `오늘의 순간` 제목과 기록 유형, 획득 카드, 오늘의 카드, 한 줄 기록, 사진, `기억 남기기` 순서를 사용한다.
 
 - [ ] **Step 2: 보조 화면과 이동 구조 정렬**
 
-  기존 Card Detail, Wishlist, Trade의 유효한 내용을 보존한다. `Opening Log` 화면은 Collection Journal 목록·작성·상세로 확장하고 팩 개봉 외 구매, 방문, 선물, 교환, 여행과 개인적인 기억을 수용한다. 모든 항목을 강제하지 않는 빠른 기록과 자세히 기록하기를 UX 원칙으로 둔다.
+  기존 Card Detail, Wishlist, Trade의 유효한 내용을 보존한다. `Opening Log` 화면은 Collection Journal 목록·작성·상세로 확장하고 팩 개봉 외 구매, 방문, 선물, 교환, 여행과 개인적인 기억을 수용한다. `오늘의 순간` 한 화면에서 기록 유형만 필수로 하고 나머지 항목은 강제하지 않는다.
 
 - [ ] **Step 3: 디자인 기준 강화**
 

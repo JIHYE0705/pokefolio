@@ -76,7 +76,7 @@
 
 - **Status:** Accepted
 - **Context:** `Opening Log`는 팩 개봉만 기록하는 기능으로 이해되기 쉬워 낱장 구매, 카드샵·팝업스토어 방문, 선물, 교환, 여행과 개인적인 기억을 포괄하지 못한다.
-- **Decision:** 사용자에게 보이는 공식 기록 개념과 용어를 `Collection Journal`로 통일한다. 빠른 기록과 선택적인 자세히 기록하기를 제공하고 모든 항목을 강제하지 않는다.
+- **Decision:** 사용자에게 보이는 공식 기록 개념과 용어를 `Collection Journal`로 통일한다. 기록은 `오늘의 순간` 한 화면에서 빠르게 남기고 모든 선택 항목을 강제하지 않는다.
 - **Consequences:** 기존 `OpeningLog`, `OpeningLogCard`, `/opening-logs`와 Frontend mock route는 구현 전 초안으로 남아 있다. 모델, API와 route 이름의 변경 및 호환 정책은 별도 설계에서 결정하며 이번 ADR만으로 구현 계약을 확정하지 않는다.
 
 ## ADR-012: Keeper is a quiet collection companion
@@ -92,3 +92,10 @@
 - **Context:** 총 카드, 중복, Wishlist와 시세를 같은 크기의 통계로 보여주는 Home은 사용자가 다시 열 이유를 관리 지표로 축소하고 모바일 SaaS dashboard처럼 보이게 한다.
 - **Decision:** Home은 이어서 꾸밀 Binder, 최근 수집 기억, 최근 추가 카드, 과거의 오늘, Keeper가 발견한 변화와 오늘 할 수 있는 한 가지 행동을 우선한다.
 - **Consequences:** 통계와 복잡한 graph는 첫 화면 중심에서 제외하고 primary CTA를 하나로 제한한다. 콘텐츠가 부족할 때는 빈 통계 tile 대신 첫 Collection Journal 또는 Binder 행동을 안내한다.
+
+## ADR-014: Collection Journal quick entry requires only a record type
+
+- **Status:** Accepted
+- **Context:** 기록 항목을 많이 요구하면 Collection Journal이 기억을 남기는 경험보다 data entry 작업처럼 느껴진다. 반대로 어떤 순간인지 구분할 최소 맥락은 필요하다.
+- **Decision:** `오늘의 순간` 빠른 기록은 기록 유형만 필수로 받고 진입 경로에서 기본값을 설정한다. 날짜·시간은 현재 시각으로 자동 저장한다. 획득 카드, 획득 카드 중에서 고르는 오늘의 카드, 한 줄 기록과 사진은 모두 선택이며 기본값은 없다. Primary action은 `기억 남기기`로 통일한다.
+- **Consequences:** 사용자는 카드나 문장 없이도 순간을 저장할 수 있다. 오늘의 카드는 획득 카드가 있을 때만 선택할 수 있어야 하며, 기록 유형 선택지와 진입 경로별 기본값 및 사진 저장 정책은 구현 전에 별도로 확정한다.
