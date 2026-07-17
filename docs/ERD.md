@@ -2,7 +2,7 @@
 
 이 문서는 구현 전 데이터 모델 후보를 설명한다. 실제 SQLAlchemy 모델이나 Alembic migration이 아니며, 카드 데이터 제공자와 식별자 정책을 정한 뒤 필드와 타입을 확정한다.
 
-[제품 비전](PRODUCT_VISION.md)이 Collection Journal 중심으로 변경되었으므로 기존 `OpeningLog` 초안은 확정 모델이 아니다. 아래 기존 엔티티는 영향 검토를 위한 기준으로 보존하고, 확장 또는 대체 후보는 문서 끝의 Open Questions에서 결정한다.
+[제품 비전](PRODUCT_VISION.md)이 `Moment(오늘의 순간)` 중심 Collection Journal로 변경되었으므로 기존 `OpeningLog` 초안은 확정 모델이 아니다. 아래 기존 엔티티는 영향 검토를 위한 기준으로 보존하고, 확장 또는 대체 후보는 문서 끝의 Open Questions에서 결정한다.
 
 ## 모델링 원칙
 
@@ -145,7 +145,7 @@ erDiagram
 
 ### OpeningLog (기존 초안)
 
-기존 기획에서 한 번의 팩 개봉 경험과 메모를 나타낸 후보였다. 새 제품 방향에서는 팩·박스 개봉뿐 아니라 구매, 방문, 선물, 교환, 여행과 개인적인 기억을 포함하는 `Collection Journal` 개념으로 확장해야 하며 이름과 필드를 아직 확정하지 않는다.
+기존 기획에서 한 번의 팩 개봉 경험과 메모를 나타낸 후보였다. 새 제품 방향에서는 팩·박스 개봉뿐 아니라 구매, 방문, 선물, 교환, 여행과 개인적인 기억을 포함하는 `Moment`로 대체해야 하며 이름과 필드를 아직 확정하지 않는다.
 
 | 필드 후보 | 타입 후보 | 설명 |
 | --- | --- | --- |
@@ -183,32 +183,45 @@ erDiagram
 
 - 바인더 생성과 첫 페이지·9개 슬롯 생성은 한 transaction으로 처리한다.
 - 페이지 추가·삭제와 번호 재정렬은 한 transaction으로 처리한다.
-- 개봉일기와 OpeningLogCard 생성은 한 transaction으로 처리한다.
-- 개봉일기 카드가 보유 수량도 늘리는 정책을 채택하면 두 변경을 같은 service transaction으로 처리한다.
+- 기존 개봉일기와 OpeningLogCard 생성은 한 transaction으로 처리하는 초안이었다.
+- Moment의 카드가 보유 수량도 늘리는 정책을 채택하면 두 변경의 service transaction과 복구 경계를 함께 정한다.
 
-위 두 개봉일기 transaction 항목은 기존 초안의 검토 기준이다. Collection Journal과 Collection의 연동 정책을 정할 때 보존, 수정 또는 대체한다.
+위 두 항목은 기존 초안의 검토 기준이다. Collection Journal과 Collection의 연동 정책을 정할 때 보존, 수정 또는 대체한다.
 
 ## 제품 방향 변경에 따른 Open Questions
 
 새 제품 비전을 지원하기 위해 다음 요구를 검토하되 이번 문서 작업에서 엔티티, 필드와 타입을 확정하지 않는다.
 
-### Collection Journal 경계
+### Moment와 Collection Journal 경계
 
-- 최상위 엔티티 이름을 `JournalEntry`로 둘지 `CollectionJournal`로 둘지
-- 획득 카드 관계를 `JournalEntryCard`로 두고 Card, UserCard 또는 실물 카드 중 무엇을 참조할지
-- 팩·박스 개봉, 낱장 구매, 카드샵·팝업스토어 방문, 선물, 교환, 여행과 개인 기억을 하나의 기록 유형으로 표현하는 방법
-- 빠른 기록은 기록 유형만 필수로 받고 진입 경로에서 기본값을 설정한다.
+승인된 제품 계약은 다음과 같다. 이는 구현 모델과 컬럼을 확정하지 않는다.
+
+```text
+Moment
+  ├─ Card 0개 이상
+  └─ Photo 0개 또는 1개(MVP)
+```
+
+- 최상위 엔티티 이름을 제품 용어와 같은 `Moment`로 둘지 저장소 이름을 `JournalEntry`로 둘지
+- 카드 관계를 `MomentCard` 또는 `JournalEntryCard`로 두고 Card, UserCard 또는 실물 카드 중 무엇을 참조할지
+- 카드가 없는 Moment를 허용한다.
+- 기록 유형은 필수이며 진입 경로에서 기본값을 설정한다.
 - 날짜·시간은 현재 시각을 자동 저장한다.
-- 획득 카드는 선택이며 오늘의 카드는 획득 카드 중에서만 선택한다.
-- 한 줄 기록과 사진은 선택이며 기본값은 없다.
+- 획득 카드는 0개 이상 선택할 수 있고 오늘의 카드는 연결한 카드 중에서만 선택한다.
+- 한 줄 기록과 사진은 선택이며 기본값은 없다. 별점은 MVP 요구사항에서 제외한다.
+- 팩·박스 개봉, 낱장 구매, 카드샵·팝업스토어 방문, 선물, 교환, 여행과 개인 기억을 하나의 기록 유형 집합으로 표현하는 방법
 - 장소, 구매처·행사, 제품명·확장팩, 팩·박스 수량, 구매 금액, 당시 기분, 만족도, 함께한 사람과 긴 이야기의 저장 범위
-- 기분과 만족도를 enum, 자유 문장 또는 둘의 조합으로 둘지
+- 당시 기분을 자유 문장 또는 제한된 선택으로 둘지. 만족도·별점은 MVP에서 다루지 않는다.
 - 기록 저장이 UserCard를 자동 생성·증가할지, 사용자 확인 뒤 반영할지
 - 기록 수정·삭제가 Collection 수량에 미치는 영향과 transaction·복구 경계
+- 오늘의 카드가 반드시 같은 Moment에 연결된 카드인지 DB constraint 또는 service validation 중 어디서 보장할지
+- `휴지통으로 이동`, `되돌리기`, `복원`에 soft delete timestamp를 사용할지 별도 상태를 사용할지
+- 휴지통 보관 기간과 자동 영구 삭제 여부
 
 ### 사진과 Attachment
 
-- 사진을 Collection Journal 전용 필드로 둘지 여러 엔티티가 공유하는 `Attachment`로 둘지
+- MVP 사진 0개 또는 1개를 Moment 전용 필드로 둘지 여러 엔티티가 공유하는 `Attachment`로 둘지
+- 다중 사진이 실제로 필요해질 때 별도 관계로 확장할지
 - 원본, thumbnail, MIME type, 크기, 대체 텍스트와 정렬 순서 중 필요한 metadata
 - 로컬 파일, object storage 또는 외부 URL 중 MVP 저장 방식
 - 위치·사람이 포함될 수 있는 사진의 업로드, 보관, 삭제와 개인정보 정책
@@ -239,6 +252,7 @@ erDiagram
 - Card provider, 라이선스, 동기화·비활성화 정책
 - UserCard를 상태별 row로 묶을지 실제 카드 한 장 단위로 저장할지
 - Collection Journal 저장 시 UserCard 수량을 자동 증가할지
+- Moment 휴지통 보관 기간과 영구 삭제 정책
 - BinderSlot에 같은 UserCard 수량보다 많은 중복 배치를 허용할지
 - 카드 condition, finish, language의 enum 값과 변경 정책
 - 검색을 DB `LIKE`로 시작할지 외부 카드 검색 API를 사용할지

@@ -6,7 +6,7 @@
 
 - Frontend에는 Next.js 최소 scaffold와 Home, Collection, Binder, 기존 `Opening Log` 명칭의 공통 mock 화면이 있다.
 - Backend 애플리케이션, 데이터베이스, migration과 실제 API 연결은 아직 없다.
-- 현재 작업은 제품 비전과 UX 기획을 Collection Journal 중심으로 재정렬하는 단계다.
+- 현재 작업은 제품 비전과 UX 기획을 `Moment(오늘의 순간)` 중심 Collection Journal로 재정렬하는 단계다.
 - 기존 mock route와 API·ERD 초안의 명칭 변경은 별도 설계와 migration 판단 뒤 진행한다.
 
 ## Phase 1: 제품 비전과 디자인 정렬
@@ -16,15 +16,16 @@
 **범위**
 
 - 제품 비전, MVP 가설과 성공 기준 확정
-- Home, Collection, Collection Journal, Binder의 정보 우선순위 정의
+- Home, Collection, Journal, Binder의 정보 우선순위 정의
+- Moment가 중심이고 카드와 사진은 선택 연결 요소라는 제품 계약 확정
 - Content-first, Apple HIG, anti-AI UI와 Keeper 원칙 정렬
 - 구 `Opening Log` 용어와 구현 초안이 받을 영향 기록
 
 **완료 조건**
 
 - [PRODUCT_VISION](PRODUCT_VISION.md), [PROJECT](PROJECT.md), [SCREENS](SCREENS.md), [DESIGN](DESIGN.md)이 서로 충돌하지 않는다.
-- 공식 기록 용어가 `Collection Journal`로 통일된다.
-- Home이 통계보다 기억과 다음 행동을 먼저 보여주는 390px 목업으로 승인된다.
+- 제품 기능은 `Collection Journal`, navigation label은 `Journal`, 개별 기록 단위는 `Moment`로 구분된다.
+- Home이 `오늘 기록한 순간 → 오늘의 카드 → 1년 전 오늘 → 이어서 꾸밀 Binder`를 보여주는 390px 목업으로 승인된다.
 - 구현된 기능과 향후 요구가 문서에서 명확히 구분된다.
 
 ## Phase 2: Collection 기본 데이터 구조
@@ -51,17 +52,21 @@
 
 **범위**
 
-- `오늘의 순간` 빠른 기록의 필드 순서와 한 화면 흐름 검증
+- `기록 유형 → 사진 또는 카드(선택) → 기억 남기기` 3결정 흐름 검증
 - 진입 경로의 기록 유형 기본값과 선택 항목의 사용성 검증
-- 목록·작성·상세의 loading, empty, error, success 흐름 설계
+- 첫 기록 Empty State, 날짜순 Timeline과 저장 보상 화면 검증
+- 작성과 Timeline의 loading, empty, error, success 및 입력 보존 흐름 설계
+- `휴지통으로 이동`, 되돌리기와 복원 UX 설계
 - 사진·장소·함께한 사람의 개인정보와 삭제 정책 결정
 
 **완료 조건**
 
-- 사용자가 기록 유형만 확인하고 현재 날짜·시간으로 기록을 저장하는 prototype을 완료한다.
+- 사용자가 세 번의 결정 안에 현재 날짜·시간으로 Moment를 저장하는 prototype을 완료한다.
 - 획득 카드, 오늘의 카드, 한 줄 기록과 사진을 모두 건너뛰어도 저장할 수 있다.
-- 선택 항목을 건너뛰어도 기록이 온전하게 보인다.
+- 선택 항목을 건너뛰어도 카드 없는 Moment가 Timeline과 저장 보상 화면에 온전하게 보인다.
 - 팩 개봉 외 최소 세 가지 수집 경험이 같은 구조로 자연스럽게 기록된다.
+- 저장 실패 시 입력이 보존되고 제거한 Moment를 되돌리거나 복원할 수 있다.
+- 별점 없이 한 줄 기록만으로 기억의 결을 남길 수 있다.
 - 390px, 확대 텍스트, keyboard와 screen reader 흐름이 승인된다.
 
 ## Phase 4: Collection CRUD
@@ -84,11 +89,12 @@
 
 ## Phase 5: Collection Journal과 Collection 연동
 
-**사용자 가치:** 카드 한 장에서 획득한 순간으로, 기록에서 실제 Collection으로 자연스럽게 오갈 수 있다.
+**사용자 가치:** Moment에서 선택한 카드로, 카드에서 그 카드와 연결된 순간으로 자연스럽게 오갈 수 있다.
 
 **범위**
 
-- Collection Journal과 획득 카드의 관계 및 transaction 정책 확정
+- Moment와 선택 카드의 0..N 관계 및 transaction 정책 확정
+- 오늘의 카드가 같은 Moment에 연결된 카드 중 하나라는 무결성 보장
 - 기록 저장 시 UserCard 자동 반영 여부와 사용자 확인 흐름 결정
 - Card Detail에서 관련 기록, 기록에서 카드 상세 연결
 - 부분 실패, 중복 카드와 수정·삭제 시 일관성 복구
@@ -97,7 +103,7 @@
 
 - 기록과 획득 카드가 원자적으로 저장되거나 명확한 복구 경계를 가진다.
 - 자동 수량 변경 여부를 사용자가 이해하고 통제한다.
-- 기록 수정·삭제가 Collection 데이터를 예기치 않게 잃게 하지 않는다.
+- Moment 수정·휴지통 이동·복원이 Collection 데이터를 예기치 않게 잃게 하지 않는다.
 - API, integration과 핵심 e2e 테스트가 통과한다.
 
 ## Phase 6: Binder와 Binder Story
@@ -124,17 +130,17 @@
 
 **범위**
 
-- 과거의 오늘, 이번 달의 기억과 처음 등록한 카드
+- `1년 전 오늘`, 이번 달의 기억과 처음 등록한 Moment
 - 여행에서 얻은 카드, 처음 완성한 Binder와 과거의 최애
 - Collection Journey의 월·연도별 변화와 기억에 남는 기록
 - Memory를 저장할지 기존 데이터에서 계산할지 결정
 
 **완료 조건**
 
-- 최소 두 종류의 Memory가 기존 기록에서 신뢰할 수 있게 생성된다.
+- `1년 전 오늘`을 포함한 최소 두 종류의 Memory가 기존 Moment에서 신뢰할 수 있게 생성된다.
 - 기록이 부족하거나 날짜가 모호할 때 거짓 추억을 만들지 않는다.
 - 숫자를 목표, 순위, streak와 성과 압박으로 표현하지 않는다.
-- 사용자가 원본 Collection Journal과 카드로 이동할 수 있다.
+- 사용자가 원본 Moment와 연결된 카드로 이동할 수 있다.
 
 ## Phase 8: Rule-based Keeper
 
