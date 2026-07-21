@@ -8,8 +8,8 @@ import { NavigationIcon } from "./navigation-icon";
 const destinations = [
   { href: "/", icon: "home", label: "홈" },
   { href: "/collection", icon: "collection", label: "컬렉션" },
+  { href: "/journal", icon: "log", label: "저널" },
   { href: "/binders", icon: "binder", label: "바인더" },
-  { href: "/opening-logs", icon: "log", label: "개봉일기" },
 ] as const;
 
 export function BottomNavigation() {
