@@ -27,7 +27,7 @@ export default function RewardPage() {
         {moment.note ? <p>{moment.note}</p> : null}
       </div>
       <div className="reward-actions">
-        <Link className="primary-button" href={`/journal/${moment.id}`}>기록 다시 보기</Link>
+        <Link className="primary-button" href="/journal">저널에서 보기</Link>
         <Link className="secondary-button" href="/">홈에서 만나기</Link>
       </div>
     </div>
