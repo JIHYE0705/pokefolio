@@ -25,10 +25,7 @@ describe("BottomNavigation", () => {
       "/collection",
     );
     expect(screen.getByRole("link", { name: "바인더" })).toHaveAttribute("href", "/binders");
-    expect(screen.getByRole("link", { name: "개봉일기" })).toHaveAttribute(
-      "href",
-      "/opening-logs",
-    );
+    expect(screen.getByRole("link", { name: "저널" })).toHaveAttribute("href", "/journal");
   });
 
   it("marks the current destination semantically", () => {
