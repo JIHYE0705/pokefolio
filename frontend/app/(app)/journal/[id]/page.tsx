@@ -34,10 +34,12 @@ export default function MomentDetailPage() {
           <div><strong>{moment.card.name}</strong><span>{moment.card.set} · {moment.card.number}</span></div>
         </section>
       ) : null}
-      <section aria-labelledby="detail-note" className="detail-note">
-        <h2 id="detail-note">그날의 한 줄</h2>
-        <p>{moment.note || "오늘의 마음을 조용히 남겼어요."}</p>
-      </section>
+      {moment.note ? (
+        <section aria-labelledby="detail-note" className="detail-note">
+          <h2 id="detail-note">그날의 한 줄</h2>
+          <p>{moment.note}</p>
+        </section>
+      ) : null}
     </article>
   );
 }

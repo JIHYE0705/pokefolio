@@ -108,6 +108,7 @@ export default function CreateMomentPage() {
                 onClick={() => setCardId(cardId === card.id ? null : card.id)}
                 type="button"
               >
+                {cardId === card.id ? <span aria-hidden="true" className="card-choice__check">✓</span> : null}
                 <CardArtwork card={card} />
                 <strong>{card.name}</strong>
                 <small>{card.number}</small>

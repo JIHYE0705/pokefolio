@@ -32,9 +32,34 @@ export const momentTypeLabels: Record<MomentType, string> = {
   special: "특별한 순간이 있었어요",
 };
 
+function isMoment(value: unknown): value is Moment {
+  if (!value || typeof value !== "object") return false;
+
+  const moment = value as Record<string, unknown>;
+  const card = moment.card as Record<string, unknown> | null;
+  const hasValidCard = card === null || (
+    typeof card === "object"
+    && typeof card.id === "string"
+    && typeof card.name === "string"
+    && typeof card.set === "string"
+    && typeof card.number === "string"
+    && typeof card.color === "string"
+  );
+
+  return typeof moment.id === "string"
+    && typeof moment.type === "string"
+    && Object.hasOwn(momentTypeLabels, moment.type)
+    && typeof moment.createdAt === "string"
+    && !Number.isNaN(Date.parse(moment.createdAt))
+    && typeof moment.note === "string"
+    && typeof moment.hasPhoto === "boolean"
+    && hasValidCard;
+}
+
 export function loadMoment(storage: Storage): Moment | null {
   try {
-    return JSON.parse(storage.getItem(MOMENT_STORAGE_KEY) ?? "null") as Moment | null;
+    const value: unknown = JSON.parse(storage.getItem(MOMENT_STORAGE_KEY) ?? "null");
+    return isMoment(value) ? value : null;
   } catch {
     return null;
   }

@@ -55,7 +55,7 @@ export default function JournalPage() {
           <div className="moment-row__copy">
             <time dateTime={moment.createdAt}>{formatMomentDate(moment.createdAt)}</time>
             <strong>{momentTypeLabels[moment.type]}</strong>
-            <span>{moment.note || "오늘의 마음을 조용히 남겼어요."}</span>
+            {moment.note ? <span>{moment.note}</span> : null}
           </div>
           <span aria-hidden="true" className="chevron">›</span>
         </Link>

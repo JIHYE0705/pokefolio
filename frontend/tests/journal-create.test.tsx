@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 
 import CreateMomentPage from "@/app/(app)/journal/new/page";
@@ -31,4 +31,15 @@ it("saves one Moment and opens the reward screen", () => {
     card: { id: "violet-card" },
   });
   expect(push).toHaveBeenCalledWith("/journal/reward");
+});
+
+it("shows a check when a card is selected", () => {
+  render(<CreateMomentPage />);
+
+  fireEvent.click(screen.getByRole("button", { name: /카드를 데려왔어요/ }));
+  const card = screen.getByRole("button", { name: /보랏빛 저녁/ });
+  fireEvent.click(card);
+
+  expect(card).toHaveAttribute("aria-pressed", "true");
+  expect(within(card).getByText("✓")).toBeInTheDocument();
 });
