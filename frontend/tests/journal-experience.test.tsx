@@ -66,8 +66,20 @@ it("shows the first saved Moment across reward, timeline, detail, and Home", () 
 it("returns to Journal Empty after resetting demo data", () => {
   render(<JournalPage />);
 
+  const menu = screen.getByText("개발 메뉴").closest("details");
+  expect(menu).not.toHaveAttribute("open");
+  fireEvent.click(screen.getByText("개발 메뉴"));
+  expect(menu).toHaveAttribute("open");
   fireEvent.click(screen.getByRole("button", { name: "데모 데이터 초기화" }));
 
   expect(screen.getByRole("heading", { name: /첫 번째 추억을/ })).toBeInTheDocument();
   expect(window.localStorage.length).toBe(0);
+});
+
+it("hides the mock Binder before the first Moment", () => {
+  window.localStorage.clear();
+  render(<HomePage />);
+
+  expect(screen.queryByText("이어서 꾸미기")).not.toBeInTheDocument();
+  expect(screen.queryByText("5 / 9장의 이야기가 모였어요")).not.toBeInTheDocument();
 });

@@ -61,10 +61,10 @@ export default function JournalPage() {
         </Link>
       </section>
 
-      <section aria-labelledby="prototype-tools" className="prototype-tools">
-        <h2 id="prototype-tools">프로토타입</h2>
+      <details className="prototype-tools">
+        <summary>개발 메뉴</summary>
         <button onClick={reset} type="button">데모 데이터 초기화</button>
-      </section>
+      </details>
     </div>
   );
 }
