@@ -76,8 +76,28 @@ it("returns to Journal Empty after resetting demo data", () => {
   expect(window.localStorage.length).toBe(0);
 });
 
-it("hides the mock Binder before the first Moment", () => {
-  window.localStorage.clear();
+it("offers the Timeline-to-Detail-to-Home path", () => {
+  const reward = render(<RewardPage />);
+  expect(screen.getByRole("link", { name: "저널에서 보기" })).toHaveAttribute(
+    "href",
+    "/journal",
+  );
+  reward.unmount();
+
+  const timeline = render(<JournalPage />);
+  expect(
+    screen.getByRole("link", { name: /특별한 순간이 있었어요/ }),
+  ).toHaveAttribute("href", `/journal/${moment.id}`);
+  timeline.unmount();
+
+  render(<MomentDetailPage />);
+  expect(screen.getByRole("link", { name: "홈에서 다시 만나기" })).toHaveAttribute(
+    "href",
+    "/",
+  );
+});
+
+it("does not show mock Binder data on Home", () => {
   render(<HomePage />);
 
   expect(screen.queryByText("이어서 꾸미기")).not.toBeInTheDocument();

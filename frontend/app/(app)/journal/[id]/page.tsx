@@ -40,6 +40,7 @@ export default function MomentDetailPage() {
           <p>{moment.note}</p>
         </section>
       ) : null}
+      <Link className="secondary-button" href="/">홈에서 다시 만나기</Link>
     </article>
   );
 }
