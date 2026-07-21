@@ -56,13 +56,15 @@ export default function HomePage() {
         </section>
       )}
 
-      <section aria-labelledby="continue-binder" className="home-section home-binder">
-        <div className="section-title-row"><h2 id="continue-binder">이어서 꾸미기</h2><Link href="/binders">바인더 보기</Link></div>
-        <Link className="binder-preview" href="/binders">
-          <div><strong>최애 카드</strong><span>5 / 9장의 이야기가 모였어요</span></div>
-          <div aria-hidden="true" className="binder-preview__slots"><i /><i /><i /></div>
-        </Link>
-      </section>
+      {moment ? (
+        <section aria-labelledby="continue-binder" className="home-section home-binder">
+          <div className="section-title-row"><h2 id="continue-binder">이어서 꾸미기</h2><Link href="/binders">바인더 보기</Link></div>
+          <Link className="binder-preview" href="/binders">
+            <div><strong>최애 카드</strong><span>5 / 9장의 이야기가 모였어요</span></div>
+            <div aria-hidden="true" className="binder-preview__slots"><i /><i /><i /></div>
+          </Link>
+        </section>
+      ) : null}
     </div>
   );
 }

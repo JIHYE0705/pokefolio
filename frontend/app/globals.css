@@ -409,21 +409,48 @@ body:has(.create-flow, .reward-view, .moment-detail) .bottom-navigation {
 }
 
 .prototype-tools {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding-top: var(--space-4);
   border-top: 1px solid var(--border-subtle);
 }
 
-.prototype-tools h2 {
-  margin: 0;
+.prototype-tools summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
   color: var(--text-secondary);
   font-size: 0.8125rem;
   font-weight: 600;
+  cursor: pointer;
+  list-style: none;
 }
 
-.prototype-tools button,
+.prototype-tools summary::-webkit-details-marker {
+  display: none;
+}
+
+.prototype-tools summary::after {
+  content: "＋";
+}
+
+.prototype-tools[open] summary::after {
+  content: "−";
+}
+
+.prototype-tools button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--feedback-danger) 24%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  color: var(--feedback-danger);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
 .text-button,
 .selected-type button {
   min-height: 44px;

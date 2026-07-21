@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CardArtwork } from "@/features/journal/card-artwork";
 import {
@@ -26,7 +26,12 @@ export default function CreateMomentPage() {
   const [cardId, setCardId] = useState<string | null>(null);
   const [hasPhoto, setHasPhoto] = useState(false);
   const [note, setNote] = useState("");
+  const composeHeadingRef = useRef<HTMLHeadingElement>(null);
   const selectedCard = mockCards.find((card) => card.id === cardId) ?? null;
+
+  useEffect(() => {
+    if (type) composeHeadingRef.current?.focus();
+  }, [type]);
 
   function submitMoment() {
     if (!type) return;
@@ -83,7 +88,7 @@ export default function CreateMomentPage() {
       <section className="compose-section">
         <div className="flow-intro">
           <p className="step-label">2 · 장면 남기기</p>
-          <h1>사진이나 카드를<br />남겨보세요.</h1>
+          <h1 ref={composeHeadingRef} tabIndex={-1}>사진이나 카드를<br />남겨보세요.</h1>
           <p>없어도 괜찮아요.</p>
         </div>
 
@@ -94,7 +99,7 @@ export default function CreateMomentPage() {
           type="button"
         >
           <span aria-hidden="true" className="photo-picker__art">{hasPhoto ? "✓" : "+"}</span>
-          <span><strong>{hasPhoto ? "오늘의 사진을 골랐어요" : "사진 추가"}</strong><small>프로토타입 사진 사용</small></span>
+          <span><strong>{hasPhoto ? "오늘의 사진을 골랐어요" : "사진 추가"}</strong><small>샘플 사진으로 미리보기</small></span>
         </button>
 
         <fieldset className="card-picker">
