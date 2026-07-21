@@ -24,7 +24,7 @@ export default function RewardPage() {
       {moment.card ? <CardArtwork card={moment.card} /> : null}
       <div className="reward-note">
         <strong>{momentTypeLabels[moment.type]}</strong>
-        <p>{moment.note || "오늘의 마음을 조용히 남겼어요."}</p>
+        {moment.note ? <p>{moment.note}</p> : null}
       </div>
       <div className="reward-actions">
         <Link className="primary-button" href={`/journal/${moment.id}`}>기록 다시 보기</Link>

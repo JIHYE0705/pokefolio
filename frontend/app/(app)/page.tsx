@@ -30,7 +30,7 @@ export default function HomePage() {
               {moment.hasPhoto ? <div aria-hidden="true" className="home-moment__photo"><span>오늘의 장면</span></div> : null}
               <div className="home-moment__copy">
                 <span>{momentTypeLabels[moment.type]}</span>
-                <strong>{moment.note || "오늘의 마음을 조용히 남겼어요."}</strong>
+                {moment.note ? <strong>{moment.note}</strong> : null}
                 <time dateTime={moment.createdAt}>오늘</time>
               </div>
             </Link>

@@ -51,6 +51,20 @@ describe("moment storage", () => {
     expect(loadMoment(storage)).toBeNull();
   });
 
+  it("returns empty for incomplete saved data", () => {
+    const storage = createStorage();
+    storage.setItem(MOMENT_STORAGE_KEY, JSON.stringify({ id: "broken-moment" }));
+
+    expect(loadMoment(storage)).toBeNull();
+  });
+
+  it("returns empty for an unknown Moment type", () => {
+    const storage = createStorage();
+    storage.setItem(MOMENT_STORAGE_KEY, JSON.stringify({ ...moment, type: "toString" }));
+
+    expect(loadMoment(storage)).toBeNull();
+  });
+
   it("clears only the prototype Moment", () => {
     const storage = createStorage();
     storage.setItem("keep-me", "yes");

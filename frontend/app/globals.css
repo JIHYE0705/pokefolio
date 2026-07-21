@@ -602,6 +602,7 @@ body:has(.create-flow, .reward-view, .moment-detail) .bottom-navigation {
 }
 
 .card-choice {
+  position: relative;
   min-width: 0;
   padding: 0.35rem;
   border: 2px solid transparent;
@@ -611,6 +612,23 @@ body:has(.create-flow, .reward-view, .moment-detail) .bottom-navigation {
   font: inherit;
   text-align: left;
   cursor: pointer;
+}
+
+.card-choice__check {
+  position: absolute;
+  z-index: 2;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 2px solid var(--surface-card);
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
 }
 
 .card-choice[aria-pressed="true"] {
